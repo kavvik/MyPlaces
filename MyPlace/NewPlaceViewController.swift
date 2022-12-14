@@ -9,8 +9,7 @@ import UIKit
 
 class NewPlaceViewController: UITableViewController {
     
-    var newPlace: Place?
-    var imageIsChanged = false
+     var imageIsChanged = false
     
     
     @IBOutlet var placeName: UITextField!
@@ -23,7 +22,6 @@ class NewPlaceViewController: UITableViewController {
         super.viewDidLoad()
         
         saveButton.isEnabled = false
-
         placeName.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
         
     }
@@ -67,7 +65,9 @@ class NewPlaceViewController: UITableViewController {
     func saveNewPlace() {
         
         
+        
  var image: UIImage?
+        
         image = imagePlace.image
         if imageIsChanged {
             image = imagePlace.image
@@ -75,12 +75,13 @@ class NewPlaceViewController: UITableViewController {
             image = UIImage(named: "imagePlaceholder")
         }
         
-        newPlace = Place(name: placeName.text!,
-                         location: placeLocation.text,
-                         type: placeType.text,
-                         image: image,
-                         restaurantImage: nil)
-        
+        let imageData = image?.pngData()
+        let newPlace = Place(name: placeName.text!,
+                             location: placeLocation.text,
+                             type: placeType.text,
+                             imageData: imageData)
+        StorageManager.saveObject(newPlace)
+
     }
     
     @IBAction func cancelAction(_ sender: Any) {
